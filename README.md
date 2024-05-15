@@ -22,9 +22,78 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-# KANBAN TASK MANAGEMENT WEB APP
+# KANBAN TASK MANAGEMENT WEB APP BACKEND
+
+## ENDPOINTS
+
+### BOARDS
+
+`GET /boards` Get all boards
+`GET /boards/:id` Get a single board by ID
+`POST /boards` Create a new board
+`PATCH /boards/:id` Update a board by ID
+`DELETE /boards/:id` Delete a board by ID
+
+### COLUMNS
+
+`GET boards/:boardId/columns` Get all columns for a specific board
+`GET /columns/:id` Get a single column by ID
+`POST /boards/:boardId/columns` Create a new column in a specific board
+`PATCH /columns/:id` Update a column by ID
+`DELETE /columns/:id` Delete a column by ID
+
+### TASKS
+
+`GET columns/:columnId/tasks` Get all tasks for a specific column
+`GET tasks/:id` Get a single task by ID
+`POST columns/:columnId/tasks` Create a new task in a specific column
+`PATCH tasks/:id` Update a task by ID
+`DELETE tasks/:id` Delete a task by ID
+
+### SUBTASKS
+
+`GET /tasks/:taskId/subtasks` Get all subtasks for a specific task
+`GET /subtasks/:id` Get a single subtask by ID
+`POST /tasks/:taskId/subtasks` Create a new subtask in a specific task
+`PATCH /subtasks/:id` Update a subtask by ID
+`DELETE /subtasks/:id` Delete a subtask by ID
+
+### CLI COMMANDS
+
+Create module
+
+```console
+nest generate module <module-name>
+```
+
+Generate controller:
+
+```console
+nest generate controller <controller-name>
+```
+
+Generate controller with validation built-in:
+
+```console
+nest generate resource <resource-name>
+```
+
+Generate service:
+
+```console
+nest generate service <service-name>
+```
 
 ## Libraries
+
+- @nestjs/typeorm
+- typeorm
+- sqlite3
+- class-validator
+- class-transformer
+- @nestjs/config
+- cross-env
+- pg
 
 ## Description
 
