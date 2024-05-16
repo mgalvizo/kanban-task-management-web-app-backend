@@ -11,6 +11,19 @@ export class BoardsService {
     @InjectRepository(Board) private readonly repo: Repository<Board>,
   ) {}
 
+  find() {
+    // Returns an array of records or an empty array
+    return this.repo.find();
+  }
+
+  findOne(id: number) {
+    if (!id) {
+      return null;
+    }
+
+    return this.repo.findOneBy({ id });
+  }
+
   create(name: string) {
     // Create board entity instance
     const board = this.repo.create({ name });

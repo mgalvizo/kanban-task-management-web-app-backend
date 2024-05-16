@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  NotFoundException,
 } from '@nestjs/common';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { BoardDto } from './dtos/board.dto';
@@ -17,9 +18,25 @@ import { CreateBoardDto } from './dtos/create-board.dto';
 export class BoardsController {
   constructor(private readonly boardsService: BoardsService) {}
 
+  @Get()
+  findAllBoards() {
+    return this.boardsService.find();
+  }
+
+  @Get('/:id')
+  async findBoard(@Param('id') id: string) {
+    const board = await this.boardsService.findOne(Number(id));
+
+    if (!board) {
+      throw new NotFoundException('board not found');
+    }
+
+    return board;
+  }
+
   @Post()
-  async createBoard(@Body() body: CreateBoardDto) {
-    const board = await this.boardsService.create(body.name);
+  createBoard(@Body() body: CreateBoardDto) {
+    const board = this.boardsService.create(body.name);
 
     return board;
   }

@@ -1,5 +1,10 @@
-### Create a new board
+### Get all boards
+GET http://localhost:3000/boards
 
+### Get a single board by ID
+GET http://localhost:3000/boards/1
+
+### Create a new board
 POST http://localhost:3000/boards
 Content-Type: application/json
 
