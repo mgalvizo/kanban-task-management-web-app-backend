@@ -84,6 +84,28 @@ Generate service:
 nest generate service <service-name>
 ```
 
+## MIGRATIONS
+
+In package.json:
+
+```json
+{
+  "typeorm": "cross-env NODE_ENV=development typeorm-ts-node-commonjs -d src/data-source.ts"
+}
+```
+
+Generate migrations:
+
+```console
+npm run typeorm migration:generate src/migrations/initial-schema
+```
+
+Run migrations:
+
+```console
+npm run typeorm migration:run
+```
+
 ## Libraries
 
 - @nestjs/typeorm

@@ -5,8 +5,8 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { List } from 'src/lists/list.entity';
-import { Subtask } from 'src/subtasks/subtask.entity';
+import { List } from '../lists/list.entity';
+import { Subtask } from '../subtasks/subtask.entity';
 
 @Entity()
 export class Task {
