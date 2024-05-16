@@ -9,5 +9,7 @@ import { List } from './list.entity';
   imports: [TypeOrmModule.forFeature([List])],
   providers: [ListsService],
   controllers: [ListsController],
+  // Export the service
+  exports: [ListsService],
 })
 export class ListsModule {}

@@ -11,13 +11,17 @@ import {
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { BoardDto } from './dtos/board.dto';
 import { BoardsService } from './boards.service';
+import { ListsService } from 'src/lists/lists.service';
 import { CreateBoardDto } from './dtos/create-board.dto';
 import { UpdateBoardDto } from './dtos/update-board.dto';
 
 @Controller('boards')
 @Serialize(BoardDto)
 export class BoardsController {
-  constructor(private readonly boardsService: BoardsService) {}
+  constructor(
+    private readonly boardsService: BoardsService,
+    private readonly listsService: ListsService,
+  ) {}
 
   @Get()
   findAllBoards() {
@@ -33,6 +37,17 @@ export class BoardsController {
     }
 
     return board;
+  }
+
+  @Get('/:id/lists')
+  async findAllListsOfBoard(@Param('id') id: string) {
+    const board = await this.boardsService.findOne(Number(id));
+
+    if (!board) {
+      throw new NotFoundException('board not found');
+    }
+
+    return this.listsService.findAllListsOfBoard(board);
   }
 
   @Post()
