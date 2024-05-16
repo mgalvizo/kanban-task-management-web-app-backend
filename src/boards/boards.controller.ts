@@ -46,4 +46,9 @@ export class BoardsController {
   updateBoard(@Param('id') id: string, @Body() body: UpdateBoardDto) {
     return this.boardsService.update(Number(id), body);
   }
+
+  @Delete('/:id')
+  removeBoard(@Param('id') id: string) {
+    return this.boardsService.remove(Number(id));
+  }
 }

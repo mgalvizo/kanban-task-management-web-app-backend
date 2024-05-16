@@ -44,4 +44,14 @@ export class BoardsService {
 
     return this.repo.save(board);
   }
+
+  async remove(id: number) {
+    const board = await this.findOne(id);
+
+    if (!board) {
+      throw new NotFoundException('board not found');
+    }
+
+    return this.repo.remove(board);
+  }
 }

@@ -19,3 +19,6 @@ Content-Type: application/json
 {
   "name": "Doing"
 }
+
+### Delete a board by ID
+DELETE http://localhost:3000/boards/1

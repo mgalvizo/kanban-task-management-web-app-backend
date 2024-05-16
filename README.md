@@ -34,13 +34,13 @@
 `PATCH /boards/:id` Update a board by ID
 `DELETE /boards/:id` Delete a board by ID
 
-### COLUMNS
+### LISTS (COLUMNS)
 
-`GET boards/:boardId/columns` Get all columns for a specific board
-`GET /columns/:id` Get a single column by ID
-`POST /boards/:boardId/columns` Create a new column in a specific board
-`PATCH /columns/:id` Update a column by ID
-`DELETE /columns/:id` Delete a column by ID
+`GET boards/:boardId/lists` Get all lists for a specific board
+`GET /lists/:id` Get a single list by ID
+`POST /boards/:boardId/lists` Create a new list in a specific board
+`PATCH /lists/:id` Update a list by ID
+`DELETE /lists/:id` Delete a list by ID
 
 ### TASKS
 
