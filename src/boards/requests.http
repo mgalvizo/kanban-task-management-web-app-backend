@@ -1,0 +1,8 @@
+### Create a new board
+
+POST http://localhost:3000/boards
+Content-Type: application/json
+
+{
+  "name": "Todo"
+}
