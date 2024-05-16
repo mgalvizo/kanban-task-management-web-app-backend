@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
@@ -29,6 +29,19 @@ export class BoardsService {
     const board = this.repo.create({ name });
 
     // Save the entity instance and run its hooks if any
+    return this.repo.save(board);
+  }
+
+  async update(id: number, attrs: Partial<Board>) {
+    const board = await this.findOne(id);
+
+    if (!board) {
+      throw new NotFoundException('board not found');
+    }
+
+    // Copies all enumerable own properties from one or more source objects to a target object (overrides existing properties).
+    Object.assign(board, attrs);
+
     return this.repo.save(board);
   }
 }

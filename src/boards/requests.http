@@ -11,3 +11,11 @@ Content-Type: application/json
 {
   "name": "Todo"
 }
+
+### Update a board by ID
+PATCH http://localhost:3000/boards/1
+Content-Type: application/json
+
+{
+  "name": "Doing"
+}

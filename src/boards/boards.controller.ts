@@ -12,6 +12,7 @@ import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { BoardDto } from './dtos/board.dto';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dtos/create-board.dto';
+import { UpdateBoardDto } from './dtos/update-board.dto';
 
 @Controller('boards')
 @Serialize(BoardDto)
@@ -39,5 +40,10 @@ export class BoardsController {
     const board = this.boardsService.create(body.name);
 
     return board;
+  }
+
+  @Patch('/:id')
+  updateBoard(@Param('id') id: string, @Body() body: UpdateBoardDto) {
+    return this.boardsService.update(Number(id), body);
   }
 }
