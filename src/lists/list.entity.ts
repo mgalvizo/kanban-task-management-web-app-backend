@@ -16,6 +16,10 @@ export class List {
   @Column()
   name: string;
 
+  // Add the foreign key column so it is displayed in the response
+  @Column()
+  boardId: number;
+
   // @ManyToOne adds the column to the database
   // Creates relation n - 1
   @ManyToOne(() => Board, (board) => board.lists)

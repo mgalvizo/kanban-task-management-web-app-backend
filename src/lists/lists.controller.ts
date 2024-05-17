@@ -14,9 +14,7 @@ import { ListsService } from './lists.service';
 import { CreateListDto } from './dtos/create-list.dto';
 import { UpdateListDto } from './dtos/update-list.dto';
 
-// `GET boards/:boardId/lists` Get all lists for a specific board
-// `GET /lists/:id` Get a single list by ID
-// `POST /boards/:boardId/lists` Create a new list in a specific board
+// `POST /boards/:boardId/lists`
 // `PATCH /lists/:id` Update a list by ID
 // `DELETE /lists/:id` Delete a list by ID
 
@@ -24,4 +22,9 @@ import { UpdateListDto } from './dtos/update-list.dto';
 @Serialize(ListDto)
 export class ListsController {
   constructor(private readonly listsService: ListsService) {}
+
+  @Get('/:id')
+  findList(@Param('id') id: string) {
+    return this.listsService.findOne(Number(id));
+  }
 }
