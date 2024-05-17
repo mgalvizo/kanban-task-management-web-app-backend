@@ -5,7 +5,7 @@ GET http://localhost:3000/boards
 GET http://localhost:3000/boards/3
 
 ### Get all lists for a specific board
-GET http://localhost:3000/boards/3/lists
+GET http://localhost:3000/boards/2/lists
 
 ### Create a new board
 POST http://localhost:3000/boards

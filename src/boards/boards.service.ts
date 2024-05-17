@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
+import { CreateBoardDto } from './dtos/create-board.dto';
 
 @Injectable()
 export class BoardsService {
@@ -24,9 +25,9 @@ export class BoardsService {
     return this.repo.findOneBy({ id });
   }
 
-  create(name: string) {
+  create(boardDto: CreateBoardDto) {
     // Create board entity instance
-    const board = this.repo.create({ name });
+    const board = this.repo.create(boardDto);
 
     // Save the entity instance and run its hooks if any
     return this.repo.save(board);

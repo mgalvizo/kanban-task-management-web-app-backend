@@ -44,9 +44,9 @@
 
 ### TASKS
 
-`GET columns/:columnId/tasks` Get all tasks for a specific column
+`GET lists/:listId/tasks` Get all tasks for a specific list
 `GET tasks/:id` Get a single task by ID
-`POST columns/:columnId/tasks` Create a new task in a specific column
+`POST lists/:listId/tasks` Create a new task in a specific list
 `PATCH tasks/:id` Update a task by ID
 `DELETE tasks/:id` Delete a task by ID
 

@@ -1,6 +1,18 @@
 ### Get a single list by ID
 GET http://localhost:3000/lists/2
 
+### Get all tasks for a specific list
+GET http://localhost:3000/lists/3/tasks
+
+### Create a new task in a specific list
+POST http://localhost:3000/lists/3/tasks
+Content-Type: application/json
+
+{
+  "name": "Conversion",
+  "description": "please expedite"
+}
+
 ### Update a list by ID
 PATCH http://localhost:3000/lists/6
 Content-Type: application/json

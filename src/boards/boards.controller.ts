@@ -57,7 +57,7 @@ export class BoardsController {
   @Post()
   @Serialize(BoardDto)
   createBoard(@Body() body: CreateBoardDto) {
-    const board = this.boardsService.create(body.name);
+    const board = this.boardsService.create(body);
 
     return board;
   }
@@ -74,7 +74,7 @@ export class BoardsController {
       throw new NotFoundException('board not found');
     }
 
-    return this.listsService.createList(body.name, board);
+    return this.listsService.createList(body, board);
   }
 
   @Patch('/:id')

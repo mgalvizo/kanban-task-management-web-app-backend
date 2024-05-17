@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { List } from './list.entity';
 import { Board } from 'src/boards/board.entity';
+import { CreateListDto } from './dtos/create-list.dto';
 
 @Injectable()
 export class ListsService {
@@ -24,8 +25,8 @@ export class ListsService {
     return this.repo.findOneBy({ id });
   }
 
-  createList(name: string, board: Board) {
-    const list = this.repo.create({ name });
+  createList(listDto: CreateListDto, board: Board) {
+    const list = this.repo.create(listDto);
 
     // We assign the entire entity but the repository will only extract the id to form the relation
     list.board = board;

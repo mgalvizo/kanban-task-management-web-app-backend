@@ -1,0 +1,12 @@
+### Get a single task by ID
+GET http://localhost:3000/tasks/2
+
+### Update a task by ID
+PATCH http://localhost:3000/tasks/2
+Content-Type: application/json
+
+{
+  "name": "Conversion",
+  "description": "Please expedite",
+  "listId": 1
+}

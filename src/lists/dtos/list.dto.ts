@@ -1,5 +1,4 @@
-import { Expose, Transform } from 'class-transformer';
-import { Board } from 'src/boards/board.entity';
+import { Expose } from 'class-transformer';
 
 export class ListDto {
   @Expose()

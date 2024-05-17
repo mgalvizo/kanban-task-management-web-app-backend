@@ -19,6 +19,9 @@ export class Task {
   @Column()
   description: string;
 
+  @Column()
+  listId: number;
+
   // @ManyToOne adds the column to the database
   // Creates relation n - 1
   @ManyToOne(() => List, (list) => list.tasks)
