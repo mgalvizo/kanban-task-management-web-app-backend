@@ -8,3 +8,6 @@ Content-Type: application/json
 {
   "name": "Doing"
 }
+
+### Delete a single list by ID
+DELETE http://localhost:3000/lists/7

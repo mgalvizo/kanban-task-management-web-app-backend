@@ -30,4 +30,9 @@ export class ListsController {
   updateList(@Param('id') id: string, @Body() body: UpdateListDto) {
     return this.listsService.update(Number(id), body);
   }
+
+  @Delete('/:id')
+  deleteList(@Param('id') id: string) {
+    return this.listsService.remove(Number(id));
+  }
 }

@@ -45,4 +45,14 @@ export class ListsService {
 
     return this.repo.save(list);
   }
+
+  async remove(id: number) {
+    const list = await this.findOne(id);
+
+    if (!list) {
+      throw new NotFoundException('list not found');
+    }
+
+    return this.repo.remove(list);
+  }
 }
