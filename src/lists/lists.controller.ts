@@ -14,8 +14,6 @@ import { ListsService } from './lists.service';
 import { CreateListDto } from './dtos/create-list.dto';
 import { UpdateListDto } from './dtos/update-list.dto';
 
-// `POST /boards/:boardId/lists`
-// `PATCH /lists/:id` Update a list by ID
 // `DELETE /lists/:id` Delete a list by ID
 
 @Controller('lists')
@@ -26,5 +24,10 @@ export class ListsController {
   @Get('/:id')
   findList(@Param('id') id: string) {
     return this.listsService.findOne(Number(id));
+  }
+
+  @Patch('/:id')
+  updateList(@Param('id') id: string, @Body() body: UpdateListDto) {
+    return this.listsService.update(Number(id), body);
   }
 }

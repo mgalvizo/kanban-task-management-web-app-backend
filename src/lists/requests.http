@@ -1,3 +1,10 @@
 ### Get a single list by ID
 GET http://localhost:3000/lists/2
 
+### Update a list by ID
+PATCH http://localhost:3000/lists/6
+Content-Type: application/json
+
+{
+  "name": "Doing"
+}
