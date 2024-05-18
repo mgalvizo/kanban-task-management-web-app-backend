@@ -9,6 +9,7 @@ export class UpdateTaskDto {
   @IsNotEmpty()
   description: string;
 
+  // Updates the foreign key
   @IsInt()
   @IsNotEmpty()
   listId: number;

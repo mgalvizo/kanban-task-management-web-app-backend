@@ -1,6 +1,18 @@
 ### Get a single task by ID
 GET http://localhost:3000/tasks/2
 
+### Get all subtasks for a specific task
+GET http://localhost:3000/tasks/2/subtasks
+
+### Create a new subtask in a specific task
+POST http://localhost:3000/tasks/2/subtasks
+Content-Type: application/json
+
+{
+  "name": "Download PSD",
+  "isDone": false
+}
+
 ### Update a task by ID
 PATCH http://localhost:3000/tasks/2
 Content-Type: application/json
@@ -10,3 +22,6 @@ Content-Type: application/json
   "description": "Please expedite",
   "listId": 1
 }
+
+### Delete a task by ID
+DELETE http://localhost:3000/tasks/3

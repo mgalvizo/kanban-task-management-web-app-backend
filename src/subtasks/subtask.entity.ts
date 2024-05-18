@@ -9,8 +9,11 @@ export class Subtask {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ default: false })
   isDone: boolean;
+
+  @Column()
+  taskId: number;
 
   // @ManyToOne adds the column to the database
   // Creates relation n - 1

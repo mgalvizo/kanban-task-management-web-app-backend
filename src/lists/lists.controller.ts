@@ -61,7 +61,7 @@ export class ListsController {
 
   @Delete('/:id')
   @Serialize(ListDto)
-  deleteList(@Param('id') id: string) {
+  removeList(@Param('id') id: string) {
     return this.listsService.remove(Number(id));
   }
 }

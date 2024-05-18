@@ -9,8 +9,8 @@ POST http://localhost:3000/lists/3/tasks
 Content-Type: application/json
 
 {
-  "name": "Conversion",
-  "description": "please expedite"
+  "name": "To delete",
+  "description": "please delete me"
 }
 
 ### Update a list by ID

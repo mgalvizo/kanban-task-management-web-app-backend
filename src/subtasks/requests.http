@@ -1,0 +1,14 @@
+### Get a single subtask by ID
+GET http://localhost:3000/subtasks/2
+
+### Update a subtask by ID
+PATCH http://localhost:3000/subtasks/1
+Content-Type: application/json
+
+{
+  "name": "Prepare assets",
+  "isDone": false
+}
+
+### Delete a subtask by ID
+DELETE http://localhost:3000/subtasks/2
