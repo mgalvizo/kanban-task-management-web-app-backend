@@ -116,6 +116,8 @@ npm run typeorm migration:run
 - @nestjs/config
 - cross-env
 - pg
+- @nestjs/throttler
+- helmet
 
 ## Description
 
