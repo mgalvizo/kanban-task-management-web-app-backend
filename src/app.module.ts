@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import { BoardsModule } from './boards/boards.module';
 import { ListsModule } from './lists/lists.module';
 import { TasksModule } from './tasks/tasks.module';
@@ -12,6 +14,7 @@ import { SubtasksModule } from './subtasks/subtasks.module';
 import { TypeORMConfigService } from './config/typeorm.config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import helmet from 'helmet';
+const cookieSession = require('cookie-session');
 
 @Module({
   imports: [
@@ -29,6 +32,8 @@ import helmet from 'helmet';
         limit: 10,
       },
     ]),
+    AuthModule,
+    UsersModule,
     BoardsModule,
     ListsModule,
     TasksModule,
@@ -52,7 +57,15 @@ import helmet from 'helmet';
   ],
 })
 export class AppModule {
+  constructor(private readonly configService: ConfigService) {}
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(helmet()).forRoutes('*');
+    consumer
+      .apply(
+        helmet(),
+        cookieSession({
+          keys: [this.configService.get('COOKIE_KEY')],
+        }),
+      )
+      .forRoutes('*');
   }
 }

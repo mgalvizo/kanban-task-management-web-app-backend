@@ -113,6 +113,8 @@ npm run typeorm migration:run
 - sqlite3
 - class-validator
 - class-transformer
+- cookie-session
+- @types/cookie-session
 - @nestjs/config
 - cross-env
 - pg

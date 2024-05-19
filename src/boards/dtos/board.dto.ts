@@ -7,4 +7,7 @@ export class BoardDto {
 
   @Expose()
   name: string;
+
+  @Expose()
+  userId: number;
 }
