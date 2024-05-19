@@ -12,6 +12,10 @@ export class User {
   @Column()
   password: string;
 
+  // Set to false in production
+  @Column({ default: true })
+  isAdmin: boolean;
+
   // Creates relation 1 - n
   @OneToMany(() => Board, (board) => board.user)
   boards: Board[];
