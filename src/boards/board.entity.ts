@@ -6,7 +6,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { List } from '../lists/list.entity';
-import { User } from 'src/users/user.entity';
+import { User } from '../users/user.entity';
 
 @Entity()
 export class Board {
