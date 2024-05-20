@@ -1,2 +1,20 @@
-### Get all boards of a user
+### Get a single user by ID
+GET http://localhost:3000/users/1
+
+### Get all boards for a specific user
 GET http://localhost:3000/users/1/boards
+
+### Find all users
+GET http://localhost:3000/users?email=test@mail.com
+
+### Update a user by ID
+PATCH http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+  "email": "test@othermail.com"
+}
+
+### Delete a user by ID
+DELETE http://localhost:3000/users/1
+
