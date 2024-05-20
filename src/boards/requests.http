@@ -2,25 +2,25 @@
 GET http://localhost:3000/boards
 
 ### Get a single board by ID
-GET http://localhost:3000/boards/3
+GET http://localhost:3000/boards/1
 
 ### Get all lists for a specific board
-GET http://localhost:3000/boards/2/lists
+GET http://localhost:3000/boards/1/lists
 
 ### Create a new board
 POST http://localhost:3000/boards
 Content-Type: application/json
 
 {
-  "name": "Test"
+  "name": "This Board"
 }
 
 ### Create a new list in a specific board
-POST http://localhost:3000/boards/3/lists
+POST http://localhost:3000/boards/1/lists
 Content-Type: application/json
 
 {
-  "name": "Extra"
+  "name": "Done"
 }
 
 ### Update a board by ID
