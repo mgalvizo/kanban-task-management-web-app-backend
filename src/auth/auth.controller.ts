@@ -3,12 +3,10 @@ import {
   Get,
   Post,
   Body,
-  UseGuards,
   UnauthorizedException,
   Session,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { UserDto } from 'src/users/dtos/user.dto';
@@ -21,7 +19,6 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('/whoami')
-  @UseGuards(AuthGuard)
   whoAmI(@CurrentUser() user: User) {
     if (!user) {
       throw new UnauthorizedException('not signed in');
