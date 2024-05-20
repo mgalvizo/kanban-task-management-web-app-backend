@@ -7,7 +7,6 @@ import {
   Body,
   Param,
   NotFoundException,
-  UseGuards,
 } from '@nestjs/common';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { BoardDto } from './dtos/board.dto';
@@ -17,8 +16,8 @@ import { CreateBoardDto } from './dtos/create-board.dto';
 import { UpdateBoardDto } from './dtos/update-board.dto';
 import { CreateListDto } from 'src/lists/dtos/create-list.dto';
 import { ListDto } from 'src/lists/dtos/list.dto';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { CurrentUser } from 'src/users/decorators/current-user.decorator';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { User } from 'src/users/user.entity';
 
 @Controller('boards')
 export class BoardsController {
@@ -59,8 +58,8 @@ export class BoardsController {
 
   @Post()
   @Serialize(BoardDto)
-  createBoard(@Body() body: CreateBoardDto) {
-    const board = this.boardsService.create(body);
+  createBoard(@Body() body: CreateBoardDto, @CurrentUser() user: User) {
+    const board = this.boardsService.create(body, user);
 
     return board;
   }

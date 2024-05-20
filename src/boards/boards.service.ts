@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
 import { CreateBoardDto } from './dtos/create-board.dto';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class BoardsService {
@@ -17,6 +18,10 @@ export class BoardsService {
     return this.repo.find();
   }
 
+  findAllBoardsOfUser(user: User) {
+    return this.repo.find({ where: { user } });
+  }
+
   findOne(id: number) {
     if (!id) {
       return null;
@@ -25,9 +30,11 @@ export class BoardsService {
     return this.repo.findOneBy({ id });
   }
 
-  create(boardDto: CreateBoardDto) {
+  create(boardDto: CreateBoardDto, user: User) {
     // Create board entity instance
     const board = this.repo.create(boardDto);
+
+    board.user = user;
 
     // Save the entity instance and run its hooks if any
     return this.repo.save(board);

@@ -7,21 +7,23 @@ import {
   Param,
   Query,
   NotFoundException,
-  UseGuards,
-  ForbiddenException,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { CurrentUser } from './decorators/current-user.decorator';
-import { User } from './user.entity';
+import { BoardsService } from 'src/boards/boards.service';
+
+//TODO
+// Add adminguard to user, board, list, task, subtask controllers
 
 @Controller('users')
 @Serialize(UserDto)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly boardsService: BoardsService,
+  ) {}
 
   @Get('/:id')
   async findUser(@Param('id') id: string) {
@@ -34,32 +36,25 @@ export class UsersController {
     return user;
   }
 
+  @Get('/:id/boards')
+  async findAllBoardsOfUser(@Param('id') id: string) {
+    const user = await this.usersService.findOne(Number(id));
+
+    return this.boardsService.findAllBoardsOfUser(user);
+  }
+
   @Get()
   findAllUsers(@Query('email') email: string) {
     return this.usersService.find(email);
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard)
-  removeUser(@Param('id') id: string, @CurrentUser() user: User) {
-    if (user.id !== Number(id)) {
-      throw new ForbiddenException('cannot perform action');
-    }
-
+  removeUser(@Param('id') id: string) {
     return this.usersService.remove(Number(id));
   }
 
   @Patch('/:id')
-  @UseGuards(AuthGuard)
-  updateUser(
-    @Param('id') id: string,
-    @Body() body: UpdateUserDto,
-    @CurrentUser() user: User,
-  ) {
-    if (user.id !== Number(id)) {
-      throw new ForbiddenException('cannot perform action');
-    }
-
+  updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.usersService.update(Number(id), body);
   }
 }

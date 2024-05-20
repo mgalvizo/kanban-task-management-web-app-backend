@@ -84,6 +84,12 @@ Generate service:
 nest generate service <service-name>
 ```
 
+Generate guard:
+
+```console
+nest generate guard <guard-name>
+```
+
 ## MIGRATIONS
 
 In package.json:

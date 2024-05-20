@@ -12,5 +12,6 @@ import { ListsModule } from 'src/lists/lists.module';
   imports: [TypeOrmModule.forFeature([Board]), ListsModule],
   providers: [BoardsService],
   controllers: [BoardsController],
+  exports: [BoardsService],
 })
 export class BoardsModule {}

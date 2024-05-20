@@ -4,8 +4,6 @@ import { SubtaskDto } from './dtos/subtask.dto';
 import { SubtasksService } from './subtasks.service';
 import { UpdateSubtaskDto } from './dtos/update-subtask.dto';
 
-// `DELETE /subtasks/:id` Delete a subtask by ID
-
 @Controller('subtasks')
 @Serialize(SubtaskDto)
 export class SubtasksController {

@@ -1,0 +1,2 @@
+### Get all boards of a user
+GET http://localhost:3000/users/1/boards

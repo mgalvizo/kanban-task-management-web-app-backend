@@ -8,9 +8,9 @@ import {
   Session,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthGuard } from './guards/auth.guard';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
-import { CurrentUser } from 'src/users/decorators/current-user.decorator';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { UserDto } from 'src/users/dtos/user.dto';
 import { User } from 'src/users/user.entity';
 import { CreateUserDto } from 'src/users/dtos/create-user.dto';
