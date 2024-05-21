@@ -126,7 +126,6 @@ npm run typeorm migration:run
 - pg
 - @nestjs/throttler
 - helmet
-- @casl/ability
 
 ## Description
 

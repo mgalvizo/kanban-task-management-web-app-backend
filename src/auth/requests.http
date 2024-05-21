@@ -4,12 +4,12 @@ GET http://localhost:3000/auth/whoami
 ### Sign out user
 POST http://localhost:3000/auth/signout
 
-### Create user (signup
+### Create user (signup)
 POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-  "email": "test@mail.com",
+  "email": "test3@mail.com",
   "password": "asdf1234"
 }
 
@@ -18,6 +18,6 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-  "email": "test@mail.com",
+  "email": "test@mailno.com",
   "password": "asdf1234"
 }

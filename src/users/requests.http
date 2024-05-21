@@ -1,5 +1,5 @@
 ### Get a single user by ID
-GET http://localhost:3000/users/1
+GET http://localhost:3000/users/2
 
 ### Get all boards for a specific user
 GET http://localhost:3000/users/1/boards
@@ -8,11 +8,11 @@ GET http://localhost:3000/users/1/boards
 GET http://localhost:3000/users?email=test@mail.com
 
 ### Update a user by ID
-PATCH http://localhost:3000/users/1
+PATCH http://localhost:3000/users/3
 Content-Type: application/json
 
 {
-  "email": "test@othermail.com"
+  "email": "test@si.com"
 }
 
 ### Delete a user by ID

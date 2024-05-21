@@ -8,16 +8,13 @@ import {
   Query,
   NotFoundException,
   UseGuards,
+  ForbiddenException,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { BoardsService } from 'src/boards/boards.service';
-import { AbilityGuard } from 'src/guards/ability/ability.guard';
-import { CheckAbilities } from 'src/decorators/ability.decorator';
-import { Action } from 'src/ability/ability.factory';
-import { User } from './user.entity';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 
 //TODO
@@ -33,8 +30,6 @@ export class UsersController {
   ) {}
 
   @Get('/:id')
-  @UseGuards(AbilityGuard)
-  @CheckAbilities({ action: Action.Read, subject: User })
   async findUser(@Param('id') id: string) {
     const user = await this.usersService.findOne(Number(id));
 
@@ -58,7 +53,7 @@ export class UsersController {
   }
 
   @Patch('/:id')
-  updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
+  async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.usersService.update(Number(id), body);
   }
 
