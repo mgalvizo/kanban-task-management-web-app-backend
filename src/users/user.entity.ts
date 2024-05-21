@@ -12,8 +12,7 @@ export class User {
   @Column()
   password: string;
 
-  // Set to false in production
-  @Column({ default: true })
+  @Column({ default: false })
   isAdmin: boolean;
 
   // Creates relation 1 - n

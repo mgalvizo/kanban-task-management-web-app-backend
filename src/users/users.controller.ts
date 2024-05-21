@@ -7,17 +7,24 @@ import {
   Param,
   Query,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { BoardsService } from 'src/boards/boards.service';
+import { AbilityGuard } from 'src/guards/ability/ability.guard';
+import { CheckAbilities } from 'src/decorators/ability.decorator';
+import { Action } from 'src/ability/ability.factory';
+import { User } from './user.entity';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
 
 //TODO
-// Add adminguard to user, board, list, task, subtask controllers
+// Check all controllers
 
 @Controller('users')
+@UseGuards(AuthGuard)
 @Serialize(UserDto)
 export class UsersController {
   constructor(
@@ -26,6 +33,8 @@ export class UsersController {
   ) {}
 
   @Get('/:id')
+  @UseGuards(AbilityGuard)
+  @CheckAbilities({ action: Action.Read, subject: User })
   async findUser(@Param('id') id: string) {
     const user = await this.usersService.findOne(Number(id));
 
