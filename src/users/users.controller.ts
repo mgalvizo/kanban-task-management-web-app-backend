@@ -8,7 +8,6 @@ import {
   Query,
   NotFoundException,
   UseGuards,
-  ForbiddenException,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
@@ -16,6 +15,9 @@ import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { BoardsService } from 'src/boards/boards.service';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { User } from './user.entity';
+import { ForbiddenError } from '@casl/ability';
 
 //TODO
 // Check all controllers
@@ -53,12 +55,16 @@ export class UsersController {
   }
 
   @Patch('/:id')
-  async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    return this.usersService.update(Number(id), body);
+  updateUser(
+    @Param('id') id: string,
+    @Body() body: UpdateUserDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.usersService.update(Number(id), body, user);
   }
 
   @Delete('/:id')
-  removeUser(@Param('id') id: string) {
-    return this.usersService.remove(Number(id));
+  removeUser(@Param('id') id: string, @CurrentUser() user: User) {
+    return this.usersService.remove(Number(id), user);
   }
 }
