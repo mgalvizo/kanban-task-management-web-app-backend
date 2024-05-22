@@ -1,14 +1,9 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { List } from './list.entity';
 import { Board } from 'src/boards/board.entity';
 import { CreateListDto } from './dtos/create-list.dto';
-import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class ListsService {

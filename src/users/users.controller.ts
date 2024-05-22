@@ -17,10 +17,6 @@ import { BoardsService } from 'src/boards/boards.service';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from './user.entity';
-import { ForbiddenError } from '@casl/ability';
-
-//TODO
-// Check all controllers
 
 @Controller('users')
 @UseGuards(AuthGuard)
@@ -60,11 +56,11 @@ export class UsersController {
     @Body() body: UpdateUserDto,
     @CurrentUser() user: User,
   ) {
-    return this.usersService.update(Number(id), body, user);
+    return this.usersService.update(Number(id), body);
   }
 
   @Delete('/:id')
-  removeUser(@Param('id') id: string, @CurrentUser() user: User) {
-    return this.usersService.remove(Number(id), user);
+  removeUser(@Param('id') id: string) {
+    return this.usersService.remove(Number(id));
   }
 }

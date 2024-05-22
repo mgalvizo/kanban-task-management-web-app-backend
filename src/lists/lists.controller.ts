@@ -8,7 +8,6 @@ import {
   Param,
   NotFoundException,
   UseGuards,
-  ForbiddenException,
 } from '@nestjs/common';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ListDto } from './dtos/list.dto';
@@ -17,9 +16,6 @@ import { TasksService } from 'src/tasks/tasks.service';
 import { UpdateListDto } from './dtos/update-list.dto';
 import { TaskDto } from 'src/tasks/dtos/task.dto';
 import { CreateTaskDto } from 'src/tasks/dtos/create-task.dto';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
-import { User } from 'src/users/user.entity';
-import { Board } from 'src/boards/board.entity';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 
 @Controller('lists')
@@ -62,11 +58,7 @@ export class ListsController {
 
   @Patch('/:id')
   @Serialize(ListDto)
-  updateList(
-    @Param('id') id: string,
-    @Body() body: UpdateListDto,
-    @CurrentUser() user: User,
-  ) {
+  updateList(@Param('id') id: string, @Body() body: UpdateListDto) {
     return this.listsService.update(Number(id), body);
   }
 
