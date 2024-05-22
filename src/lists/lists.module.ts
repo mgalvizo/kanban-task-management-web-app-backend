@@ -5,10 +5,9 @@ import { ListsService } from './lists.service';
 import { ListsController } from './lists.controller';
 import { List } from './list.entity';
 import { TasksModule } from 'src/tasks/tasks.module';
-import { CaslModule } from 'src/casl/casl.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([List]), TasksModule, CaslModule],
+  imports: [TypeOrmModule.forFeature([List]), TasksModule],
   providers: [ListsService],
   controllers: [ListsController],
   // Export the service

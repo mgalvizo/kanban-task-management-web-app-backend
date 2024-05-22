@@ -21,7 +21,6 @@ import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from 'src/users/user.entity';
 import { Board } from 'src/boards/board.entity';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
-import { DataSource } from 'typeorm';
 
 @Controller('lists')
 @UseGuards(AuthGuard)
@@ -29,7 +28,6 @@ export class ListsController {
   constructor(
     private readonly listsService: ListsService,
     private readonly tasksService: TasksService,
-    private readonly dataSource: DataSource,
   ) {}
 
   @Get('/:id')
@@ -52,28 +50,11 @@ export class ListsController {
 
   @Post('/:id/tasks')
   @Serialize(TaskDto)
-  async createTaskInList(
-    @Body() body: CreateTaskDto,
-    @Param('id') id: string,
-    @CurrentUser() user: User,
-  ) {
+  async createTaskInList(@Body() body: CreateTaskDto, @Param('id') id: string) {
     const list = await this.listsService.findOne(Number(id));
 
     if (!list) {
       throw new NotFoundException('list not found');
-    }
-
-    const boardId = list.boardId;
-
-    const board = await this.dataSource
-      .getRepository(Board)
-      .createQueryBuilder()
-      .select('*')
-      .where('board.id = :boardId', { boardId })
-      .getRawOne();
-
-    if (user.id !== board.userId) {
-      throw new ForbiddenException('you can only create tasks in own lists');
     }
 
     return this.tasksService.createTask(body, list);
@@ -86,12 +67,12 @@ export class ListsController {
     @Body() body: UpdateListDto,
     @CurrentUser() user: User,
   ) {
-    return this.listsService.update(Number(id), body, user);
+    return this.listsService.update(Number(id), body);
   }
 
   @Delete('/:id')
   @Serialize(ListDto)
-  removeList(@Param('id') id: string, @CurrentUser() user: User) {
-    return this.listsService.remove(Number(id), user);
+  removeList(@Param('id') id: string) {
+    return this.listsService.remove(Number(id));
   }
 }
