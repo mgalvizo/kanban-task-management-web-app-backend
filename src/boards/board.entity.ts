@@ -16,6 +16,9 @@ export class Board {
   @Column()
   name: string;
 
+  @Column()
+  userId: number;
+
   // Creates relation 1 - n
   @OneToMany(() => List, (list) => list.board)
   lists: List[];

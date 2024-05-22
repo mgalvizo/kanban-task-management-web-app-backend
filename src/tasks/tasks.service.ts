@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   Injectable,
   NotFoundException,
   UnprocessableEntityException,
@@ -8,6 +9,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
 import { List } from 'src/lists/list.entity';
 import { CreateTaskDto } from './dtos/create-task.dto';
+import { Board } from 'src/boards/board.entity';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class TasksService {
@@ -36,7 +39,7 @@ export class TasksService {
     return this.repo.save(task);
   }
 
-  async update(id: number, attrs: Partial<Task>) {
+  async update(id: number, attrs: Partial<Task>, currentUser: User) {
     const task = await this.findOne(id);
 
     if (!task) {
@@ -57,6 +60,13 @@ export class TasksService {
     // Get the boardId of the list
     const boardId = list.boardId;
 
+    const board = await this.dataSource
+      .getRepository(Board)
+      .createQueryBuilder()
+      .select('*')
+      .where('board.id = :boardId', { boardId })
+      .getRawOne();
+
     // Get all the lists of the boardId
     const lists = await this.dataSource
       .getRepository(List)
@@ -68,6 +78,10 @@ export class TasksService {
     // Map possible options
     const options = lists.map((list) => list.id);
 
+    if (currentUser.id !== board.userId) {
+      throw new ForbiddenException('you can only update own tasks');
+    }
+
     // Check listId input is included in the options array
     if (!options.includes(attrs.listId)) {
       throw new UnprocessableEntityException('value not in options');
@@ -78,11 +92,33 @@ export class TasksService {
     return this.repo.save(task);
   }
 
-  async remove(id: number) {
+  async remove(id: number, currentUser: User) {
     const task = await this.findOne(id);
 
     if (!task) {
       throw new NotFoundException('task not found');
+    }
+
+    const listId = task.listId;
+
+    const list = await this.dataSource
+      .getRepository(List)
+      .createQueryBuilder()
+      .select('*')
+      .where('list.id = :id', { id: listId })
+      .getRawOne();
+
+    const boardId = list.boardId;
+
+    const board = await this.dataSource
+      .getRepository(Board)
+      .createQueryBuilder()
+      .select('*')
+      .where('board.id = :boardId', { boardId })
+      .getRawOne();
+
+    if (currentUser.id !== board.userId) {
+      throw new ForbiddenException('you can only delete own tasks');
     }
 
     return this.repo.remove(task);

@@ -7,6 +7,8 @@ import {
   Body,
   Param,
   NotFoundException,
+  ForbiddenException,
+  UseGuards,
 } from '@nestjs/common';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { TaskDto } from './dtos/task.dto';
@@ -15,12 +17,20 @@ import { TasksService } from './tasks.service';
 import { SubtaskDto } from 'src/subtasks/dtos/subtask.dto';
 import { SubtasksService } from 'src/subtasks/subtasks.service';
 import { CreateSubtaskDto } from 'src/subtasks/dtos/create-subtask.dto';
+import { DataSource } from 'typeorm';
+import { List } from 'src/lists/list.entity';
+import { Board } from 'src/boards/board.entity';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { User } from 'src/users/user.entity';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
 
 @Controller('tasks')
+@UseGuards(AuthGuard)
 export class TasksController {
   constructor(
     private readonly tasksService: TasksService,
     private readonly subtasksService: SubtasksService,
+    private readonly dataSource: DataSource,
   ) {}
 
   @Get('/:id')
@@ -46,6 +56,7 @@ export class TasksController {
   async createSubtaskInTask(
     @Param('id') id: string,
     @Body() body: CreateSubtaskDto,
+    @CurrentUser() user: User,
   ) {
     const task = await this.tasksService.findOne(Number(id));
 
@@ -53,18 +64,40 @@ export class TasksController {
       throw new NotFoundException('task not found');
     }
 
+    const list = await this.dataSource
+      .getRepository(List)
+      .createQueryBuilder()
+      .select('*')
+      .where('list.id = :listId', { listId: task.listId })
+      .getRawOne();
+
+    const board = await this.dataSource
+      .getRepository(Board)
+      .createQueryBuilder()
+      .select('*')
+      .where('board.id = :boardId', { boardId: list.boardId })
+      .getRawOne();
+
+    if (user.id !== board.userId) {
+      throw new ForbiddenException('you can only create on own tasks');
+    }
+
     return this.subtasksService.createSubtask(body, task);
   }
 
   @Patch('/:id')
   @Serialize(TaskDto)
-  updateTask(@Param('id') id: string, @Body() body: UpdateTaskDto) {
-    return this.tasksService.update(Number(id), body);
+  updateTask(
+    @Param('id') id: string,
+    @Body() body: UpdateTaskDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.tasksService.update(Number(id), body, user);
   }
 
   @Delete('/:id')
   @Serialize(TaskDto)
-  removeTask(@Param('id') id: string) {
-    return this.tasksService.remove(Number(id));
+  removeTask(@Param('id') id: string, @CurrentUser() user: User) {
+    return this.tasksService.remove(Number(id), user);
   }
 }

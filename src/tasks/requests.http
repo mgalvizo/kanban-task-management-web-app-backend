@@ -2,10 +2,10 @@
 GET http://localhost:3000/tasks/2
 
 ### Get all subtasks for a specific task
-GET http://localhost:3000/tasks/2/subtasks
+GET http://localhost:3000/tasks/1/subtasks
 
 ### Create a new subtask in a specific task
-POST http://localhost:3000/tasks/2/subtasks
+POST http://localhost:3000/tasks/3/subtasks
 Content-Type: application/json
 
 {
@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ### Update a task by ID
-PATCH http://localhost:3000/tasks/2
+PATCH http://localhost:3000/tasks/3
 Content-Type: application/json
 
 {
@@ -24,4 +24,4 @@ Content-Type: application/json
 }
 
 ### Delete a task by ID
-DELETE http://localhost:3000/tasks/3
+DELETE http://localhost:3000/tasks/1

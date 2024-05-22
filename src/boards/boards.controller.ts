@@ -8,6 +8,7 @@ import {
   Param,
   NotFoundException,
   UseGuards,
+  ForbiddenException,
 } from '@nestjs/common';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { BoardDto } from './dtos/board.dto';
@@ -72,6 +73,7 @@ export class BoardsController {
   async createListInBoard(
     @Body() body: CreateListDto,
     @Param('id') id: string,
+    @CurrentUser() user: User,
   ) {
     const board = await this.boardsService.findOne(Number(id));
 
@@ -79,7 +81,7 @@ export class BoardsController {
       throw new NotFoundException('board not found');
     }
 
-    return this.listsService.createList(body, board);
+    return this.listsService.createList(body, board, user);
   }
 
   @Patch('/:id')

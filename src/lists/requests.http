@@ -1,11 +1,11 @@
 ### Get a single list by ID
-GET http://localhost:3000/lists/2
+GET http://localhost:3000/lists/4
 
 ### Get all tasks for a specific list
 GET http://localhost:3000/lists/3/tasks
 
 ### Create a new task in a specific list
-POST http://localhost:3000/lists/3/tasks
+POST http://localhost:3000/lists/1/tasks
 Content-Type: application/json
 
 {
@@ -14,12 +14,12 @@ Content-Type: application/json
 }
 
 ### Update a list by ID
-PATCH http://localhost:3000/lists/6
+PATCH http://localhost:3000/lists/1
 Content-Type: application/json
 
 {
-  "name": "Doing"
+  "name": "Backlog"
 }
 
 ### Delete a single list by ID
-DELETE http://localhost:3000/lists/7
+DELETE http://localhost:3000/lists/4
