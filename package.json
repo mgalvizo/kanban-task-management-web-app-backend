@@ -21,7 +21,6 @@
     "typeorm": "cross-env NODE_ENV=development typeorm-ts-node-commonjs -d src/data-source.ts"
   },
   "dependencies": {
-    "@casl/ability": "^6.7.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.2",
     "@nestjs/core": "^10.0.0",

@@ -9,7 +9,7 @@ POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-  "email": "test@idcuatro.com",
+  "email": "test@id4.com",
   "password": "asdf1234"
 }
 
@@ -18,6 +18,6 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-  "email": "test@idtres.com",
+  "email": "test@id4.com",
   "password": "asdf1234"
 }

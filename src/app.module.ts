@@ -14,7 +14,6 @@ import { SubtasksModule } from './subtasks/subtasks.module';
 import { TypeORMConfigService } from './config/typeorm.config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { CurrentUserMiddleware } from './users/middlewares/current-user.middleware';
-import { AbilityModule } from './ability/ability.module';
 import helmet from 'helmet';
 const cookieSession = require('cookie-session');
 
@@ -40,7 +39,6 @@ const cookieSession = require('cookie-session');
     ListsModule,
     TasksModule,
     SubtasksModule,
-    AbilityModule,
   ],
   controllers: [AppController],
   providers: [
