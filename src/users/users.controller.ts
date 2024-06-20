@@ -18,6 +18,12 @@ import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from './user.entity';
 
+// TODO
+// Implement casl check video from minute 28
+// Guards can only be implemented for simple stuff
+// If the validation is more complicated do it at the service level check Update example
+// Combine both approaches in app
+
 @Controller('users')
 @UseGuards(AuthGuard)
 @Serialize(UserDto)
