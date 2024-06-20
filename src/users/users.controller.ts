@@ -8,6 +8,7 @@ import {
   Query,
   NotFoundException,
   UseGuards,
+  ForbiddenException,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
@@ -17,6 +18,8 @@ import { BoardsService } from 'src/boards/boards.service';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from './user.entity';
+import { AbilityFactory, Action } from 'src/ability/ability.factory';
+import { ForbiddenError } from '@casl/ability';
 
 // TODO
 // Implement casl check video from minute 28
@@ -31,14 +34,27 @@ export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly boardsService: BoardsService,
+    private readonly abilityFactory: AbilityFactory,
   ) {}
 
   @Get('/:id')
-  async findUser(@Param('id') id: string) {
+  async findUser(@Param('id') id: string, @CurrentUser() currentUser: User) {
+    // Using casl validation here
+    const ability = this.abilityFactory.defineAbility(currentUser);
+
     const user = await this.usersService.findOne(Number(id));
 
     if (!user) {
       throw new NotFoundException('user not found');
+    }
+
+    // User can only read own data
+    try {
+      ForbiddenError.from(ability).throwUnlessCan(Action.Read, user);
+    } catch (err) {
+      if (err instanceof ForbiddenError) {
+        throw new ForbiddenException(err.message);
+      }
     }
 
     return user;
