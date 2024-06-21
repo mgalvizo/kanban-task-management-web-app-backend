@@ -68,7 +68,16 @@ export class UsersController {
   }
 
   @Get()
-  findAllUsers(@Query('email') email: string) {
+  findAllUsers(
+    @Query('email') email: string,
+    @CurrentUser() currentUser: User,
+  ) {
+    if (!currentUser.isAdmin) {
+      throw new ForbiddenException(
+        'You are not allowed to perform this action',
+      );
+    }
+
     return this.usersService.find(email);
   }
 
@@ -76,13 +85,13 @@ export class UsersController {
   updateUser(
     @Param('id') id: string,
     @Body() body: UpdateUserDto,
-    @CurrentUser() user: User,
+    @CurrentUser() currentUser: User,
   ) {
-    return this.usersService.update(Number(id), body);
+    return this.usersService.update(Number(id), body, currentUser);
   }
 
   @Delete('/:id')
-  removeUser(@Param('id') id: string) {
-    return this.usersService.remove(Number(id));
+  removeUser(@Param('id') id: string, @CurrentUser() currentUser: User) {
+    return this.usersService.remove(Number(id), currentUser);
   }
 }

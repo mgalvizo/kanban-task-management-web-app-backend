@@ -34,10 +34,10 @@ export class AbilityFactory {
       can(Action.Manage, 'all');
     } else {
       // USERS
-      can(Action.Read, User, { id: user.id });
-      cannot(Action.Read, User, { id: { $ne: user.id } }).because(
-        'You can only read own data',
-      );
+      can([Action.Read, Action.Update, Action.Delete], User, { id: user.id });
+      cannot([Action.Read, Action.Update, Action.Delete], User, {
+        id: { $ne: user.id },
+      }).because(`You can only manage own data`);
     }
 
     // Build set of abilities for a given user
