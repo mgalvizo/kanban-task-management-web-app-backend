@@ -6,6 +6,10 @@ import {
   ExtractSubjectType,
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
+import { Board } from 'src/boards/board.entity';
+import { List } from 'src/lists/list.entity';
+import { Subtask } from 'src/subtasks/subtask.entity';
+import { Task } from 'src/tasks/task.entity';
 import { User } from 'src/users/user.entity';
 
 export enum Action {
@@ -18,7 +22,11 @@ export enum Action {
 
 // Multiple subjects can be added e.g. InferSubjects<typeof User | typeof Post>
 // "all" is a wildcard for any subject
-export type Subjects = InferSubjects<typeof User> | 'all';
+export type Subjects =
+  | InferSubjects<
+      typeof User | typeof Board | typeof List | typeof Task | typeof Subtask
+    >
+  | 'all';
 
 export type AppAbility = MongoAbility<[Action, Subjects]>;
 
@@ -29,15 +37,25 @@ export class AbilityFactory {
       createMongoAbility,
     );
 
-    // ADMIN
+    // ADMIN USER
     if (user.isAdmin) {
       can(Action.Manage, 'all');
     } else {
-      // USERS
+      // disallow everything by default
+      cannot(Action.Manage, 'all').because('You can only manage own resources');
+      // REGULAR USER
       can([Action.Read, Action.Update, Action.Delete], User, { id: user.id });
-      cannot([Action.Read, Action.Update, Action.Delete], User, {
-        id: { $ne: user.id },
-      }).because(`You can only manage own data`);
+      // Board
+      can([Action.Read, Action.Update, Action.Delete], Board, {
+        user: { $elemMatch: { id: user.id } },
+      });
+      // List (Column)
+      // can([Action.Read, Action.Update, Action.Delete], List, {
+      //   board: { $elemMatch: { user: { $elemMatch: { id: user.id } } } },
+      // });
+      // Task
+
+      // Subtask
     }
 
     // Build set of abilities for a given user

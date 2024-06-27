@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { AbilityFactory, Action } from 'src/ability/ability.factory';
 import { ForbiddenError } from '@casl/ability';
+import { checkAbilities } from 'src/ability/check-abilities';
 
 @Injectable()
 export class UsersService {
@@ -43,13 +44,15 @@ export class UsersService {
       throw new NotFoundException('user not found');
     }
 
-    try {
-      ForbiddenError.from(ability).throwUnlessCan(Action.Update, user);
-    } catch (err) {
-      if (err instanceof ForbiddenError) {
-        throw new ForbiddenException(err.message);
-      }
-    }
+    checkAbilities(ability, Action.Update, user);
+
+    // try {
+    //   ForbiddenError.from(ability).throwUnlessCan(Action.Update, user);
+    // } catch (err) {
+    //   if (err instanceof ForbiddenError) {
+    //     throw new ForbiddenException(err.message);
+    //   }
+    // }
 
     Object.assign(user, attrs);
 

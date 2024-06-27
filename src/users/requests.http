@@ -8,13 +8,13 @@ GET http://localhost:3000/users/1/boards
 GET http://localhost:3000/users?email=test@id6.com
 
 ### Update a user by ID
-PATCH http://localhost:3000/users/7
+PATCH http://localhost:3000/users/8
 Content-Type: application/json
 
 {
-  "email": "test@id6updated.com"
+  "email": "test@id8.com"
 }
 
 ### Delete a user by ID
-DELETE http://localhost:3000/users/7
+DELETE http://localhost:3000/users/9
 

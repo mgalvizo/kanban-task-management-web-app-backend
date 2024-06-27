@@ -19,13 +19,7 @@ import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from './user.entity';
 import { AbilityFactory, Action } from 'src/ability/ability.factory';
-import { ForbiddenError } from '@casl/ability';
-
-// TODO
-// Implement casl check video from minute 28
-// Guards can only be implemented for simple stuff
-// If the validation is more complicated do it at the service level check Update example
-// Combine both approaches in app
+import { checkAbilities } from 'src/ability/check-abilities';
 
 @Controller('users')
 @UseGuards(AuthGuard)
@@ -49,13 +43,7 @@ export class UsersController {
     }
 
     // User can only read own data
-    try {
-      ForbiddenError.from(ability).throwUnlessCan(Action.Read, user);
-    } catch (err) {
-      if (err instanceof ForbiddenError) {
-        throw new ForbiddenException(err.message);
-      }
-    }
+    checkAbilities(ability, Action.Read, user);
 
     return user;
   }
