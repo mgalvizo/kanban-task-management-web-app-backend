@@ -8,6 +8,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
 import { CreateBoardDto } from './dtos/create-board.dto';
 import { User } from 'src/users/user.entity';
+import { AbilityFactory, Action } from 'src/ability/ability.factory';
+import { checkAbilities } from 'src/ability/check-abilities';
 
 @Injectable()
 export class BoardsService {
@@ -15,6 +17,7 @@ export class BoardsService {
     // repo is an instance of a TypeORM repository that deals with instances of Boards
     // @InjectRepository tells the dependency injection system that we need the Board repository
     @InjectRepository(Board) private readonly repo: Repository<Board>,
+    private readonly abilityFactory: AbilityFactory,
   ) {}
 
   find() {
@@ -22,8 +25,18 @@ export class BoardsService {
     return this.repo.find();
   }
 
-  findAllBoardsOfUser(user: User) {
-    return this.repo.find({ where: { user } });
+  async findAllBoardsOfUser(user: User, currentUser: User) {
+    if (currentUser.isAdmin) {
+      return this.repo.find({ where: { user } });
+    }
+
+    const ability = this.abilityFactory.defineAbility(currentUser);
+
+    const boards = await this.repo.find({ where: { user } });
+
+    checkAbilities(ability, Action.Read, boards);
+
+    return boards;
   }
 
   findOne(id: number) {

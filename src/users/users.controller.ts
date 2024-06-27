@@ -9,6 +9,8 @@ import {
   NotFoundException,
   UseGuards,
   ForbiddenException,
+  Session,
+  Request,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
@@ -48,11 +50,16 @@ export class UsersController {
     return user;
   }
 
+  // TODO
+  // Check this endpoint works as expected with CASL ability
   @Get('/:id/boards')
-  async findAllBoardsOfUser(@Param('id') id: string) {
+  async findAllBoardsOfUser(
+    @Param('id') id: string,
+    @CurrentUser() currentUser: User,
+  ) {
     const user = await this.usersService.findOne(Number(id));
 
-    return this.boardsService.findAllBoardsOfUser(user);
+    return this.boardsService.findAllBoardsOfUser(user, currentUser);
   }
 
   @Get()
@@ -79,7 +86,11 @@ export class UsersController {
   }
 
   @Delete('/:id')
-  removeUser(@Param('id') id: string, @CurrentUser() currentUser: User) {
-    return this.usersService.remove(Number(id), currentUser);
+  removeUser(
+    @Param('id') id: string,
+    @CurrentUser() currentUser: User,
+    @Session() session: any,
+  ) {
+    return this.usersService.remove(Number(id), currentUser, session);
   }
 }

@@ -46,20 +46,12 @@ export class UsersService {
 
     checkAbilities(ability, Action.Update, user);
 
-    // try {
-    //   ForbiddenError.from(ability).throwUnlessCan(Action.Update, user);
-    // } catch (err) {
-    //   if (err instanceof ForbiddenError) {
-    //     throw new ForbiddenException(err.message);
-    //   }
-    // }
-
     Object.assign(user, attrs);
 
     return this.repo.save(user);
   }
 
-  async remove(id: number, currentUser: User) {
+  async remove(id: number, currentUser: User, session) {
     const ability = this.abilityFactory.defineAbility(currentUser);
 
     const user = await this.findOne(id);
@@ -68,12 +60,12 @@ export class UsersService {
       throw new NotFoundException('user not found');
     }
 
-    try {
-      ForbiddenError.from(ability).throwUnlessCan(Action.Delete, user);
-    } catch (err) {
-      if (err instanceof ForbiddenError) {
-        throw new ForbiddenException(err.message);
-      }
+    checkAbilities(ability, Action.Delete, user);
+
+    // User is logged in and attempting to delete own account
+    // log user out by removing the session
+    if (currentUser.id === session.userId) {
+      session.userId = null;
     }
 
     return this.repo.remove(user);

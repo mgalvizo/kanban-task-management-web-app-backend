@@ -24,7 +24,12 @@ export enum Action {
 // "all" is a wildcard for any subject
 export type Subjects =
   | InferSubjects<
-      typeof User | typeof Board | typeof List | typeof Task | typeof Subtask
+      | typeof User
+      | typeof Board
+      | Board[]
+      | typeof List
+      | typeof Task
+      | typeof Subtask
     >
   | 'all';
 

@@ -22,12 +22,10 @@ export class AuthController {
 
   @Get('/whoami')
   @UseGuards(AuthGuard)
-  whoAmI(@CurrentUser() user: User) {
-    if (!user) {
-      throw new UnauthorizedException('not signed in');
-    }
+  whoAmI(@CurrentUser() currentUser: User) {
+    // auth guard already checks if we are signed in or not
 
-    return user;
+    return currentUser;
   }
 
   @Post('/signout')
