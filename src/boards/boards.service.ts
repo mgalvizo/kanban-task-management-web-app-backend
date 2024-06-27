@@ -34,7 +34,7 @@ export class BoardsService {
 
     const boards = await this.repo.find({ where: { user } });
 
-    checkAbilities(ability, Action.Read, boards);
+    boards.forEach((board) => checkAbilities(ability, Action.Read, board));
 
     return boards;
   }

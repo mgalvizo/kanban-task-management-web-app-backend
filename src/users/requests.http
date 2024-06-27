@@ -2,7 +2,7 @@
 GET http://localhost:3000/users/7
 
 ### Get all boards for a specific user
-GET http://localhost:3000/users/1/boards
+GET http://localhost:3000/users/7/boards
 
 ### Find all users
 GET http://localhost:3000/users?email=test@id6.com
@@ -16,5 +16,5 @@ Content-Type: application/json
 }
 
 ### Delete a user by ID
-DELETE http://localhost:3000/users/9
+DELETE http://localhost:3000/users/7
 

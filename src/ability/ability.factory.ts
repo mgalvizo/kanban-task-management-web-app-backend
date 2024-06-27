@@ -24,12 +24,7 @@ export enum Action {
 // "all" is a wildcard for any subject
 export type Subjects =
   | InferSubjects<
-      | typeof User
-      | typeof Board
-      | Board[]
-      | typeof List
-      | typeof Task
-      | typeof Subtask
+      typeof User | typeof Board | typeof List | typeof Task | typeof Subtask
     >
   | 'all';
 
@@ -52,7 +47,7 @@ export class AbilityFactory {
       can([Action.Read, Action.Update, Action.Delete], User, { id: user.id });
       // Board
       can([Action.Read, Action.Update, Action.Delete], Board, {
-        user: { $elemMatch: { id: user.id } },
+        userId: user.id,
       });
       // List (Column)
       // can([Action.Read, Action.Update, Action.Delete], List, {
