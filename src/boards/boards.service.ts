@@ -47,11 +47,11 @@ export class BoardsService {
     return this.repo.findOneBy({ id });
   }
 
-  create(boardDto: CreateBoardDto, user: User) {
+  create(boardDto: CreateBoardDto, currentUser: User) {
     // Create board entity instance
     const board = this.repo.create(boardDto);
 
-    board.user = user;
+    board.user = currentUser;
 
     // Save the entity instance and run its hooks if any
     return this.repo.save(board);

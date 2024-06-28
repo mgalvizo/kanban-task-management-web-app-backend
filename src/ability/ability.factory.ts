@@ -49,10 +49,10 @@ export class AbilityFactory {
       can([Action.Read, Action.Update, Action.Delete], Board, {
         userId: user.id,
       });
+
       // List (Column)
-      // can([Action.Read, Action.Update, Action.Delete], List, {
-      //   board: { userId: user.id },
-      // });
+      can([Action.Read, Action.Update, Action.Delete], List, {});
+
       // Task
       // can([Action.Read, Action.Update, Action.Delete], Task, {
       //   list: { $elemMatch: { board: { userId: user.id } } },

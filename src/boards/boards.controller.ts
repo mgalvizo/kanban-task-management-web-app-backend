@@ -65,20 +65,23 @@ export class BoardsController {
 
   @Get('/:id/lists')
   @Serialize(ListDto)
-  async findAllListsOfBoard(@Param('id') id: string) {
+  async findAllListsOfBoard(
+    @Param('id') id: string,
+    @CurrentUser() currentUser: User,
+  ) {
     const board = await this.boardsService.findOne(Number(id));
 
     if (!board) {
       throw new NotFoundException('board not found');
     }
 
-    return this.listsService.findAllListsOfBoard(board);
+    return this.listsService.findAllListsOfBoard(board, currentUser);
   }
 
   @Post()
   @Serialize(BoardDto)
-  createBoard(@Body() body: CreateBoardDto, @CurrentUser() user: User) {
-    const board = this.boardsService.create(body, user);
+  createBoard(@Body() body: CreateBoardDto, @CurrentUser() currentUser: User) {
+    const board = this.boardsService.create(body, currentUser);
 
     return board;
   }
@@ -88,12 +91,19 @@ export class BoardsController {
   async createListInBoard(
     @Body() body: CreateListDto,
     @Param('id') id: string,
+    @CurrentUser() currentUser: User,
   ) {
+    // Using casl validation here
+    const ability = this.abilityFactory.defineAbility(currentUser);
+
     const board = await this.boardsService.findOne(Number(id));
 
     if (!board) {
       throw new NotFoundException('board not found');
     }
+
+    // user can only create lists in own boards
+    checkAbilities(ability, Action.Read, board);
 
     return this.listsService.createList(body, board);
   }

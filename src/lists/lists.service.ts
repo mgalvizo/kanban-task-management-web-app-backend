@@ -4,6 +4,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { List } from './list.entity';
 import { Board } from 'src/boards/board.entity';
 import { CreateListDto } from './dtos/create-list.dto';
+import { AbilityFactory, Action } from 'src/ability/ability.factory';
+import { User } from 'src/users/user.entity';
+import { checkAbilities } from 'src/ability/check-abilities';
 
 @Injectable()
 export class ListsService {
@@ -11,10 +14,22 @@ export class ListsService {
   // @InjectRepository tells the dependency injection system that we need the Board repository
   constructor(
     @InjectRepository(List) private readonly repo: Repository<List>,
+    private readonly abilityFactory: AbilityFactory,
   ) {}
 
-  findAllListsOfBoard(board: Board) {
-    return this.repo.find({ where: { board } });
+  async findAllListsOfBoard(board: Board, currentUser: User) {
+    if (currentUser.isAdmin) {
+      return this.repo.find({ where: { board } });
+    }
+
+    const ability = this.abilityFactory.defineAbility(currentUser);
+
+    // Check if we can read the board to output its lists
+    checkAbilities(ability, Action.Read, board);
+
+    const lists = await this.repo.find({ where: { board } });
+
+    return lists;
   }
 
   findOne(id: number) {
