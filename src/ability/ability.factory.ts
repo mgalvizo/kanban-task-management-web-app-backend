@@ -51,10 +51,12 @@ export class AbilityFactory {
       });
       // List (Column)
       // can([Action.Read, Action.Update, Action.Delete], List, {
-      //   board: { $elemMatch: { user: { $elemMatch: { id: user.id } } } },
+      //   board: { userId: user.id },
       // });
       // Task
-
+      // can([Action.Read, Action.Update, Action.Delete], Task, {
+      //   list: { $elemMatch: { board: { userId: user.id } } },
+      // });
       // Subtask
     }
 

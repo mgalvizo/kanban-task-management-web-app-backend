@@ -50,8 +50,6 @@ export class UsersController {
     return user;
   }
 
-  // TODO
-  // Check this endpoint works as expected with CASL ability
   @Get('/:id/boards')
   async findAllBoardsOfUser(
     @Param('id') id: string,

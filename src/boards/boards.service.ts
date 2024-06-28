@@ -57,12 +57,16 @@ export class BoardsService {
     return this.repo.save(board);
   }
 
-  async update(id: number, attrs: Partial<Board>) {
+  async update(id: number, attrs: Partial<Board>, currentUser: User) {
+    const ability = this.abilityFactory.defineAbility(currentUser);
+
     const board = await this.findOne(id);
 
     if (!board) {
       throw new NotFoundException('board not found');
     }
+
+    checkAbilities(ability, Action.Update, board);
 
     // Copies all enumerable own properties from one or more source objects to a target object (overrides existing properties).
     Object.assign(board, attrs);
@@ -70,12 +74,16 @@ export class BoardsService {
     return this.repo.save(board);
   }
 
-  async remove(id: number) {
+  async remove(id: number, currentUser: User) {
+    const ability = this.abilityFactory.defineAbility(currentUser);
+
     const board = await this.findOne(id);
 
     if (!board) {
       throw new NotFoundException('board not found');
     }
+
+    checkAbilities(ability, Action.Delete, board);
 
     return this.repo.remove(board);
   }

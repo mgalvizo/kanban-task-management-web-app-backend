@@ -2,7 +2,7 @@
 GET http://localhost:3000/boards
 
 ### Get a single board by ID
-GET http://localhost:3000/boards/3
+GET http://localhost:3000/boards/2
 
 ### Get all lists for a specific board
 GET http://localhost:3000/boards/1/lists
@@ -12,7 +12,7 @@ POST http://localhost:3000/boards
 Content-Type: application/json
 
 {
-  "name": "an id4 board"
+  "name": "Pads"
 }
 
 ### Create a new list in a specific board
@@ -28,8 +28,8 @@ PATCH http://localhost:3000/boards/2
 Content-Type: application/json
 
 {
-  "name": "yes you can"
+  "name": "Lead"
 }
 
 ### Delete a board by ID
-DELETE http://localhost:3000/boards/2
+DELETE http://localhost:3000/boards/3
