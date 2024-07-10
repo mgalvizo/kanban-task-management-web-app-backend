@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 // Connect entity to parent module
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoardsService } from './boards.service';
@@ -10,7 +10,11 @@ import { AbilityModule } from 'src/ability/ability.module';
 @Module({
   // Create repository
   // Import the whole module
-  imports: [TypeOrmModule.forFeature([Board]), ListsModule, AbilityModule],
+  imports: [
+    TypeOrmModule.forFeature([Board]),
+    forwardRef(() => ListsModule),
+    AbilityModule,
+  ],
   providers: [BoardsService],
   controllers: [BoardsController],
   exports: [BoardsService],

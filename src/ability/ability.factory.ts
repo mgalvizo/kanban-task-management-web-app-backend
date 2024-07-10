@@ -32,7 +32,7 @@ export type AppAbility = MongoAbility<[Action, Subjects]>;
 
 @Injectable()
 export class AbilityFactory {
-  defineAbility(user: User) {
+  defineAbility(user: User, boards?: Board[]) {
     const { can, cannot, build } = new AbilityBuilder<AppAbility>(
       createMongoAbility,
     );
@@ -51,7 +51,11 @@ export class AbilityFactory {
       });
 
       // List (Column)
-      can([Action.Read, Action.Update, Action.Delete], List, {});
+      if (boards) {
+        can([Action.Read, Action.Update, Action.Delete], List, {
+          boardId: { $in: boards.map((board) => board.id) },
+        });
+      }
 
       // Task
       // can([Action.Read, Action.Update, Action.Delete], Task, {

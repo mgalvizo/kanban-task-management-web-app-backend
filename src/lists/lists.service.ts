@@ -49,12 +49,21 @@ export class ListsService {
     return this.repo.save(list);
   }
 
-  async update(id: number, attrs: Partial<List>) {
+  async update(
+    id: number,
+    attrs: Partial<List>,
+    currentUser: User,
+    boards: Board[],
+  ) {
+    const ability = this.abilityFactory.defineAbility(currentUser, boards);
+
     const list = await this.findOne(id);
 
     if (!list) {
       throw new NotFoundException('list not found');
     }
+
+    checkAbilities(ability, Action.Update, list);
 
     // Copies all enumerable own properties from one or more source objects to a target object (overrides existing properties).
     Object.assign(list, attrs);
@@ -62,12 +71,16 @@ export class ListsService {
     return this.repo.save(list);
   }
 
-  async remove(id: number) {
+  async remove(id: number, currentUser: User, boards: Board[]) {
+    const ability = this.abilityFactory.defineAbility(currentUser, boards);
+
     const list = await this.findOne(id);
 
     if (!list) {
       throw new NotFoundException('list not found');
     }
+
+    checkAbilities(ability, Action.Delete, list);
 
     return this.repo.remove(list);
   }
